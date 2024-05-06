@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2gud</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    /* Set initial width using media query */
+    @media (min-width: 768px) {
+      .search-form input {
+        width: 40rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg" style="height: 5rem;background-color: #F0F8FF;">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="{% static 'images/2gudlogo.png' %}">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="d-flex flex-grow-1"> <!-- Use a class for easier styling -->
+          <form class="d-flex" method="POST" action="{% url 'search' %}">
+                {% csrf_token %}
+                <input type="search" name="search" placeholder="Search" class="form-control" style="width: 40rem;margin-left: 6rem;">
+                <input type="submit" value="search" class="btn bg-danger">
+            </form>
+        </div>
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link active text-black" aria-current="page" href="{% url 'home'%}" style="color: black">Home</a></li>
+          <li class="nav-item">
+                    {% if 'user_id' in request.session %}
+                    <a class="nav-link " href="{% url 'profile' %}" style="color: black">Profile</a>
+                    {% else %}
+                    <a class="nav-link" href="{% url 'login' %}" style="color: black">Log In</a>
+                    {% endif %}
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cart_store' %}" style="color: black">Cart</a>
+                </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-5">
+    <div class="row">
+      <div class="col-lg-3 border-end" style="background-color: #ffffff;height: 22rem;">
+        <form method="POST">
+          {% csrf_token %}
+            <h6 class="text-center">Sorting and Filter</h6>
+            <hr>
+          <p>Sort</p>
+          <ul>
+            <li><button class="btn">Low-High</button></li>
+            <li><button  class="btn">High-Low</button></li>
+
+          </ul>
+          <hr>
+          <p>Filter</p>
+          <ul>
+            <li><button class="btn">Popular</button></li>
+            <li><button  class="btn">Newest</button></li>
+
+
+          </ul>
+
+        </form>
+        <!-- Add additional filtering options here -->
+      </div>
+      <div class="col-lg-9">
+        <div class="container">
+          {% for specifications in specifications %}
+          <a href="detail/{{ specifications.product_id.product_id }}" class="text-decoration-none">
+            <div class="row bg-body-tertiary mt-5">
+              <div class="col-md-4 text-center">
+                <img src="{{ specifications.product_id.image_id.images.url }}" style="width: 19rem;height: 19rem;" class="mt-2">
+              </div>
+              <div class="col-md-8" style="padding-left: 7rem;">
+                <p style="color: black;font-size: 18px;font-family:Verdana, Geneva, Tahoma, sans-serif;" class="pt-4">{{specifications.product_id.model_name}}</p>
+                <p style="color: rgb(79, 71, 71);font-size: 12px;"> #just here</p>
+                <p style="color: forestgreen;font-size: 18px;">23% off</p>
+                <p style="color: rgb(8, 8, 8);font-size: 19px;font-weight: bold;">₹ {{specifications.price}}</p>
+                <p style="color: rgb(8, 8, 8);font-size: 19px;">Bank offer, Save extra with combo offer</p>
+                <p style="color: rgb(79, 71, 71);font-size: 12px;"> Free delivery</p>
+              </div>
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Success Animation</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  text-align: center;
+}
+
+.checkmark-circle {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+}
+
+.checkmark-circle .background {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #faf2e0;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.checkmark-circle .checkmark {
+  width: 80px; /* Adjusted width */
+  height: 80px; /* Adjusted height */
+  border-radius: 50%;
+  border: 3px solid #4caf50;
+  position: absolute;
+  top: 35px; /* Adjusted position */
+  left: 35px; /* Adjusted position */
+  animation: drawCheckmark 0.7s forwards;
+  opacity: 0;
+}
+
+@keyframes drawCheckmark {
+  0% {
+    opacity: 0;
+    transform: scale(5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.checkmark-circle .draw:after {
+  content: '';
+  width: 28px; /* Adjusted width */
+  height: 50px; /* Adjusted height */
+  border: solid #4caf50;
+  border-width: 0 3px 3px 0;
+  position: absolute;
+  top: 5px; /* Adjusted position */
+  left: px; /* Adjusted position */
+  transform: rotate(40deg);
+  margin-left: -1rem;
+
+}
+
+h1 {
+  margin-top: 20px;
+  color: #333;
+}
+
+</style>
+<body style="background-color:whitesmoke;">
+<div class="container">
+  <div class="checkmark-circle">
+    <div class="background"></div>
+    <div class="checkmark draw"></div>
+  </div>
+  <h1>Your Order Has Been Successfully Placed!</h1>
+</div>
+</body>
+<script>
+        // Redirect back after 2 seconds
+        setTimeout(function() {
+            history.back();
+        }, 2000);
+    </script>
+
+</html>

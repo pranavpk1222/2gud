@@ -1,0 +1,32 @@
+.bi{
+
+    font-size: 28px;
+    color:rgb(243, 147, 147);
+}
+
+.span{
+    font-size: 30px;
+    color:rgb(243, 147, 147);
+}
+
+
+#look{
+    background-color: aliceblue;
+}
+.navbar-dark .nav-item .nav-link {
+    color: #fff;
+  }
+
+ #srch{
+    width: 25rem;
+
+ }
+ @media only screen and (max-width: 800px) {
+    #srch {
+      width: auto;
+    }
+  }
+.img:hover{
+    scale: 1.02;
+    transition: tranasform 0.5s ease-in-out;
+}

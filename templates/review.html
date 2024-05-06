@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2gud</title>
+</head>
+<body>
+
+  <div class="container mt-5">
+    {% for spec_data in spec_id %}
+    <div class="row">
+      <div class="col-md-5 border-end">
+
+
+        <p> <img src="{{spec_data.product_id.image_id.images.url}}" style="width: 400px;height: 400px;"></p>
+        <hr>
+        <p class="fw-bold">Specification</p>
+        <ul class="list-unstyled">
+          <li class="my-2"><i class="bi bi-memory mx-2"></i>RAM: {{spec_data.ram}}</li>
+          <li class="my-2"> <i class="bi bi-sd-card-fill mx-2"></i>ROM: {{spec_data.rom}}</li>
+          <li class="my-2"><i class="bi bi-camera-fill mx-2 my-2"></i> Camera: {{spec_data.camera}}</li>
+          <li class="my-2"> <i class="bi bi-battery-full mx-2 my-2"></i> Battery: {{spec_data.battery}}</li>
+          <li class="my-2"> <i class="bi bi-arrows-fullscreen mx-2 my-2"></i>Screen Size: {{spec_data.screen_size}}</li>
+          <li class="my-2"> <i class="bi bi-cpu-fill mx-2 my-2"></i>Processor: {{spec_data.processor}}</li>
+        </ul>
+
+        <hr>
+        <p class="fw-bold">General</p>
+        <ul class="disk">
+          <li  class="my-2">Model Name: {{spec_data.model_name}}</li>
+          <li  class="my-2">Operating System: {{spec_data.operating_system}}</li>
+          <li  class="my-2">Version: {{spec_data.version}}</li>
+          <li  class="my-2">Colour: {{spec_data.colour}}</li>
+          <li  class="my-2" >Model Number: {{spec_data.product_id.model_number}}</li>
+        </ul>
+
+
+      </div>
+      <div class="col-md-5">
+        {% for order in order %}
+<h5>Add your review</h5>
+        <p class="mt-5"><i class="bi bi-person-check-fill"></i>{{order.user_name}} </p>
+        <form method="POST">
+          {% csrf_token %}
+
+
+        <p> <input type="text" name="feedback" class="form-control w-100" style="height: 200px;"></p>
+        <input type="submit" value="Submit" class="btn btn-success w-50">
+          </form>
+        {% endfor %}
+      </div>
+{% endfor %}
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>

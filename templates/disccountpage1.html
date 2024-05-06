@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2gud</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    /* Set initial width using media query */
+    @media (min-width: 768px) {
+      .search-form input {
+        width: 40rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg mb-5" style="height: 5rem;background-color: #F0F8FF;">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="{% static 'images/2gudlogo.png' %}">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="d-flex flex-grow-1"> <!-- Use a class for easier styling -->
+          <form class="d-flex" method="POST" action="{% url 'search' %}">
+                {% csrf_token %}
+                <input type="search" name="search" placeholder="Search" class="form-control" style="width: 40rem;margin-left: 6rem;">
+                <input type="submit" value="search" class="btn bg-danger">
+            </form>
+        </div>
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link active text-black" aria-current="page" href="{% url 'home'%}" style="color: black">Home</a></li>
+          <li class="nav-item">
+                    {% if 'user_id' in request.session %}
+                    <a class="nav-link " href="{% url 'profile' %}" style="color: black">Profile</a>
+                    {% else %}
+                    <a class="nav-link" href="{% url 'login' %}" style="color: black">Log In</a>
+                    {% endif %}
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cart_store' %}" style="color: black">Cart</a>
+                </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+
+<div class="container-fluid">
+  <div class="container">
+
+  <div class="row">
+      {% for img in img %}
+      <img src="{{img.event_img.url}}" height="400px" width="1295px" style="align-items: center;">
+      {% endfor %}
+    {% for offer in offer %}
+
+    <div class="col-md-3  my-5">
+
+      <div class="card shadow-lg" style="width: 18rem;height: 25rem;border-bottom-right-radius: 8%;border-bottom-left-radius: 8%;">
+
+        <center>
+        <span class="badge w-75 rounded-5 rounded-top-0" style="background-color: rgb(74, 74, 173);height: 1.5rem;">{{offer.up_to}}Disscount</span>
+           <a href="#"> <img src="{{offer.product_id.image_id.images.url}}" class="card-img-top pt-5" alt="..." style="width:13rem;height: 15rem;"></a>
+
+
+         <div class="card-body ">
+
+           <h5 class="card-title">{{offer.product_id.model_name}}</h5>
+           <a href="detail/{{offer.product_id.product_id}}" class="btn btn-outline-danger mt-1">Buy now</a>
+
+         </div>
+        </center>
+
+       </div>
+    </div>
+
+
+{% endfor %}
+  </div>
+</div>
+
+</div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>

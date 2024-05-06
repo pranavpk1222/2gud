@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2gud</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    /* Set initial width using media query */
+    @media (min-width: 768px) {
+      .search-form input {
+        width: 40rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg mb-5" style="height: 5rem;background-color: #F0F8FF;">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="{% static 'images/2gudlogo.png' %}">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="d-flex flex-grow-1"> <!-- Use a class for easier styling -->
+          <form class="d-flex" method="POST" action="{% url 'search' %}">
+                {% csrf_token %}
+                <input type="search" name="search" placeholder="Search" class="form-control" style="width: 40rem;margin-left: 6rem;">
+                <input type="submit" value="search" class="btn bg-danger">
+            </form>
+        </div>
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link active text-black" aria-current="page" href="{% url 'home'%}" style="color: black">Home</a></li>
+          <li class="nav-item">
+                    {% if 'user_id' in request.session %}
+                    <a class="nav-link " href="{% url 'profile' %}" style="color: black">Profile</a>
+                    {% else %}
+                    <a class="nav-link" href="{% url 'login' %}" style="color: black">Log In</a>
+                    {% endif %}
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cart_store' %}" style="color: black">Cart</a>
+                </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6" style="height: 900px">
+
+        {% for product in product %}
+
+        <div id="mainImageContainer" class="border rounded mb-3" style="text-align: center">
+
+            <img id="mainImage" class="rounded fit img-fluid" src="{{ product.image_id.images.url }}" alt="Main Image" style="height: 28rem;width:26rem;">
+          <a href="favorite/{{product.product_id}}"><i class="bi bi-heart-fill ms-5 text-danger"></i> </a>
+
+        </div>
+        <div class="d-flex justify-content-center mb-3" id="thumbnailContainer">
+          <a data-fslightbox="mygallery" class="border mx-2 rounded item-thumb" href="#">
+            <img class="thumbnail img-fluid" src="{{ product.image_id.img1.url }}" alt="Thumbnail 1"  style="height: 10rem;width:23rem;">
+          </a>
+          <a data-fslightbox="mygallery" class="border mx-2 rounded item-thumb" href="#">
+            <img class="thumbnail img-fluid" src="{{ product.image_id.img2.url }}" alt="Thumbnail 2" style="height: 10rem;width:23rem;">
+          </a>
+          <a data-fslightbox="mygallery" class="border mx-2 rounded item-thumb" href="#">
+            <img class="thumbnail img-fluid" src="{{ product.image_id.img3.url }}" alt="Thumbnail 3" style="height: 10rem;width:23rem;">
+          </a>
+          <a data-fslightbox="mygallery" class="border mx-2 rounded item-thumb" href="#">
+            <img class="thumbnail img-fluid" src="{{ product.image_id.images.url }}" alt="Thumbnail 4" style="height: 10rem;width:23rem;">
+          </a>
+        </div>
+        <div>{% endfor %}
+          {% for spec_data in spec_data %}
+          <form method="POST" action="{% url 'cart' spec_data.spec_id %}">
+    {% csrf_token %}
+    <select class="btn" name="quantity">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+    </select>
+    <button type="submit" class="btn btn-warning">ADD TO CART</button>
+            <a href="{% url 'order_first' spec_data.spec_id %}" class="btn btn-danger">BUY NOW</a>
+                </form>
+
+        </div>
+<hr>
+        <div class="col-md-12">
+            <a href="review/{{spec_data.spec_id}}"> <button class="btn  w-25  my-5" style="background-color: #d9d6d6;height: 50px;width: auto">Rate this product</button></a>
+            {% for review in reviews %}
+            <p>{{review.feedback_date}}</p>
+            <p style="background-color: whitesmoke"><i class="bi bi-person-circle"></i>  {{review.user_id}}: {{review.feedback_text}}</p>
+            {% endfor %}
+        </div>
+      </div>
+
+      <div class="col-md-6 shadow bg-white p-4" style="height: 900px;">
+
+        <p class="mt-4">{{spec_data.product_id.model_name}}</p>
+        <p>Rating</p>
+        <p class="text-success">Special price</p>
+        <p>₹ {{spec_data.price}}</p>
+        <p class="text-danger">Hurry, Only a few left!</p>
+        <hr>
+        <p class="fw-bold">Product condition</p>
+{% if spec_data.product_id.condition_id.condition_name == "Not Opened" %}
+    <button class="btn btn-success">{{ spec_data.product_id.condition_id.condition_name }}</button>
+        {% elif spec_data.product_id.condition_id.condition_name == "Superb" %}
+    <button class="btn btn-warning">{{ spec_data.product_id.condition_id.condition_name }}</button>
+{% else %}
+    <button class="btn btn-danger">{{ spec_data.product_id.condition_id.condition_name }}</button>
+{% endif %}
+
+        <hr>
+        <p class="fw-bold">Specification</p>
+        <ul class="list-unstyled">
+          <li class="my-2"><i class="bi bi-memory mx-2"></i>RAM: {{spec_data.ram}}</li>
+          <li class="my-2"> <i class="bi bi-sd-card-fill mx-2"></i>ROM: {{spec_data.rom}}</li>
+          <li class="my-2"><i class="bi bi-camera-fill mx-2 my-2"></i> Camera: {{spec_data.camera}}</li>
+          <li class="my-2"> <i class="bi bi-battery-full mx-2 my-2"></i> Battery: {{spec_data.battery}}</li>
+          <li class="my-2"> <i class="bi bi-arrows-fullscreen mx-2 my-2"></i>Screen Size: {{spec_data.screen_size}}</li>
+          <li class="my-2"> <i class="bi bi-cpu-fill mx-2 my-2"></i>Processor: {{spec_data.processor}}</li>
+        </ul>
+
+        <hr>
+        <p class="fw-bold">General</p>
+        <ul class="disk">
+          <li  class="my-2">Model Name: {{spec_data.model_name}}</li>
+          <li  class="my-2">Operating System: {{spec_data.operating_system}}</li>
+          <li  class="my-2">Version: {{spec_data.version}}</li>
+          <li  class="my-2">Colour: {{spec_data.colour}}</li>
+          <li  class="my-2" >Model Number: {{spec_data.product_id.model_number}}</li>
+        </ul>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const thumbnailLinks = document.querySelectorAll('.item-thumb');
+      const mainImage = document.getElementById('mainImage');
+
+      thumbnailLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+          event.preventDefault();
+          const thumbnailSrc = this.querySelector('img').getAttribute('src');
+          mainImage.setAttribute('src', thumbnailSrc);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
