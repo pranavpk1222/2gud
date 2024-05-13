@@ -76,15 +76,25 @@ WSGI_APPLICATION = 'Project_2gud.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'main_project_2gud',
+#         'PASSWORD': '',
+#         'ROOT': '',
+#         'PORT': '',
+#         'USER': 'root'
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'main_project_2gud',
-        'PASSWORD': '',
-        'ROOT': '',
-        'PORT': '',
-        'USER': 'root'
-    }
+        'NAME': 'mydatabase',
+        'USER': 'admin',
+        'PASSWORD': '12345678',
+        'HOST': 'database-1.cf4sueasc2oc.ap-southeast-2.rds.amazonaws.com',
+        'PORT':'3306',
+}
 }
 
 
